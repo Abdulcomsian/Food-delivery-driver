@@ -12,9 +12,8 @@ import {
 import {useIsDrawerOpen} from '@react-navigation/drawer';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Colors, Images} from '../constants';
-import textFamily from '../constants/textFamily';
-import getShadow from '../utils/shadow';
+import {Colors, Images, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
 const BadgeSize = 18;
 const activeOpacity = 0.85;
 const HeaderA = ({
@@ -241,13 +240,13 @@ const newOrderReqStyle = StyleSheet.create({
   NORText: {
     color: Colors.white,
     marginLeft: 7,
-    fontFamily: textFamily.ROBOTO_REGULAR,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
     fontSize: 15,
   },
   viewText: {
     fontSize: 15,
     color: Colors.white,
-    fontFamily: textFamily.ROBOTO_REGULAR,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
     margin: 4,
     marginHorizontal: 8,
   },

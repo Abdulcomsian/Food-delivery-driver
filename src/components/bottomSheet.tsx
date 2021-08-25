@@ -5,9 +5,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useSelector, useDispatch} from 'react-redux';
-import {Cards} from '../components';
-import {Colors, Images} from '../constants';
-import textFamily from '../constants/textFamily';
+import {Cards} from '@components';
+import {Colors, Images, TextFamily} from '@constants';
 const BottomSheetSheetA = ({
   setStatus,
   status,
@@ -70,7 +69,7 @@ const BottomSheetSheetA = ({
                 style={{
                   fontWeight: 'bold',
                   fontSize: 16,
-                  fontFamily: textFamily.ROBOTO_BLACK,
+                  fontFamily: TextFamily.ROBOTO_BLACK,
                 }}>
                 Go {status ? 'off' : 'on'}line
               </Text>

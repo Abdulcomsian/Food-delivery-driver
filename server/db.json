@@ -1,0 +1,50 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "AfricEat Rider1",
+      "email": "rider1@africeat.com",
+      "password": "password111",
+      "phone": "+923035666666"
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "uid": 1,
+      "created_at": "9-9-2021",
+      "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      "id": 2,
+      "uid": 1,
+      "created_at": "10-9-2021",
+      "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      "id": 3,
+      "uid": 1,
+      "created_at": "11-9-2021",
+      "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      "id": 4,
+      "uid": 1,
+      "created_at": "12-9-2021",
+      "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      "id": 5,
+      "uid": 1,
+      "created_at": "13-9-2021",
+      "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    }
+  ],
+  "achievements": [
+    {
+      "id": 1,
+      "uid": 1,
+      "onlineHr": 5
+    }
+  ]
+}

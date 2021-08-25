@@ -4,9 +4,8 @@ import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Table, Row} from 'react-native-table-component';
-import {Colors, TextFamily} from '../../constants';
-import {Headers} from '../../components';
-import textFamily from '../../constants/textFamily';
+import {Colors, TextFamily} from '@constants';
+import {Headers} from '@components';
 const OrderHistoryScreen = ({
   navigation,
   route,
@@ -23,7 +22,7 @@ const OrderHistoryScreen = ({
         <Text
           numberOfLines={1}
           style={{
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
@@ -32,7 +31,7 @@ const OrderHistoryScreen = ({
         <Text
           numberOfLines={1}
           style={{
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
@@ -41,7 +40,7 @@ const OrderHistoryScreen = ({
         <Text
           numberOfLines={1}
           style={{
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
@@ -52,7 +51,7 @@ const OrderHistoryScreen = ({
           style={{
             textAlign: 'center',
             textAlignVertical: 'center',
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
           }}>
           {item.pickedFrom}
@@ -115,7 +114,7 @@ const ItemView = ({item, index}) => {
           style={{
             width: '100%',
             textAlign: 'center',
-            fontFamily: textFamily.ROBOTO_THIN,
+            fontFamily: TextFamily.ROBOTO_THIN,
             fontSize: Platform.OS === 'android' ? 16 : 15,
           }}>
           {index + 1}

@@ -16,10 +16,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Geolocation from 'react-native-geolocation-service';
-import {Colors, Images} from '../../constants';
-import {Buttons} from '../../components';
+import {Colors, Images} from '@constants';
+import {Buttons} from '@components';
 import appConfig from '../../../app.json';
-import Actions from '../../redux/actions';
+import Actions from '@redux/actions';
 import {useDispatch} from 'react-redux';
 const LocationSwitcher = ({
   navigation,

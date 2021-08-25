@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {Colors, Images} from '../constants';
-import getShadow from '../utils/shadow';
+import {Colors, Images} from '@constants';
+import getShadow from '@utils/shadow';
 const Stepper = ({
   step = 1,
   lineTitle1 = '',

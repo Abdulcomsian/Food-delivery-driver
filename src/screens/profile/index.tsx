@@ -3,11 +3,10 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Platform, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-import {Colors, Images, TextFamily} from '../../constants';
-import {Headers} from '../../components';
+import {Colors, Images, TextFamily} from '@constants';
+import {Headers} from '@components';
 const ProfileScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const {top, bottom} = useSafeAreaInsets();
-
   return (
     <View style={[ProfileStyle.container, {paddingBottom: bottom}]}>
       <Headers.HeaderA

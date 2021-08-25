@@ -1,9 +1,9 @@
-import {Colors} from '../constants';
+import {Colors} from '@constants';
 import {ViewStyle} from 'react-native';
 export default (
-  elevation: number = 1,
-  backgroundColor: string = Colors.white,
-  shadowColor: string = Colors.black,
+  elevation = 1,
+  backgroundColor = Colors.white,
+  shadowColor = Colors.black,
 ): ViewStyle => {
   const shadow = {
     backgroundColor,

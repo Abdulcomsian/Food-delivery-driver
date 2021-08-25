@@ -1,8 +1,5 @@
 import ActionType from '../types';
-import {
-  OrdersStatesInterface,
-  reducerArgument,
-} from '../../constants/interfaces';
+import {OrdersStatesInterface, reducerArgument} from '@constants/interfaces';
 const InitialOrderState: OrdersStatesInterface = {
   currentOrder: null,
   ordersPending: [],

@@ -3,16 +3,16 @@ import {StatusBar, Platform, PermissionsAndroid} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
-//======================[Screens]====================================
-import Drawer from './Drawer';
-import Login from '../screens/login';
-import PhoneVerify from '../screens/phoneVerify';
 import {openSettings, PERMISSIONS, check} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
-//import PasswordReset from '../screens/passwordReset';
-import Locationswitcher from '../screens/locationSwitcher';
-import {Colors} from '../constants';
-import {InitialUserInterface} from '../constants/interfaces';
+//======================[Screens]====================================
+import Drawer from './Drawer';
+import Login from '@screens/login';
+import PhoneVerify from '@screens/phoneVerify';
+//import PasswordReset from '@screens/passwordReset';
+import Locationswitcher from '@screens/locationSwitcher';
+import {Colors} from '@constants';
+import {InitialUserInterface} from '@constants/interfaces';
 
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();

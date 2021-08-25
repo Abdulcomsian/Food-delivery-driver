@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {View, TouchableOpacity, Image, Text, StyleSheet} from 'react-native';
-import {Colors, Images, TextFamily} from '../constants';
-import getShadow from '../utils/shadow';
+import {Colors, Images, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
 import Header from './header';
 const Icon = () => <Image source={Images.bic} style={specialViewStyle.image} />;
 const FloatingTopLeftBtn = ({

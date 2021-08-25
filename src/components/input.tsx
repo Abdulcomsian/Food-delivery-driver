@@ -2,14 +2,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useRef} from 'react';
 import {
-  View,
+  TouchableOpacity,
   ViewStyle,
   TextInput,
-  TouchableOpacity,
   Image,
+  View,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
-import {Colors, Images} from '../constants';
+import {Colors, Images} from '@constants';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 const PhoneInputField = ({
   style = {},

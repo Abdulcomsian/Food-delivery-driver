@@ -4,9 +4,9 @@
  **/
 import React, {useEffect} from 'react';
 import {View, Platform, StatusBar} from 'react-native';
-import {Colors} from './src/constants';
-import MainNavigator from './src/navigator';
-import {Store, persistor} from './src/redux';
+import {Colors} from '@constants';
+import MainNavigator from './navigator';
+import {Store, persistor} from './redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 const App = () => {

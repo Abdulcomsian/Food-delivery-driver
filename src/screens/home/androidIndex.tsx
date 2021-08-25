@@ -8,18 +8,12 @@ import {openSettings, PERMISSIONS, check} from 'react-native-permissions';
 import LocationEnabler from 'react-native-location-enabler';
 import GetLocation from 'react-native-get-location';
 import {useSelector, useDispatch} from 'react-redux';
-import getShadow from '../../utils/shadow';
-import {
-  Headers,
-  Cards,
-  Stepper,
-  GoogleMap,
-  BottomSheet,
-} from '../../components';
-import {Colors} from '../../constants';
-import {getStatus} from '../../utils/libs';
-import {InitialUserInterface} from '../../constants/interfaces';
-import ACTIONS from '../../redux/actions';
+import getShadow from '@utils/shadow';
+import {Headers, Cards, Stepper, GoogleMap, BottomSheet} from '@components';
+import {Colors} from '@constants';
+import {getStatus} from '@utils/libs';
+import {InitialUserInterface} from '@constants/interfaces';
+import ACTIONS from '@redux/actions';
 const {
   PRIORITIES: {HIGH_ACCURACY},
   useLocationSettings,

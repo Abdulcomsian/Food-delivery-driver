@@ -1,5 +1,5 @@
 import ActionType from '../types';
-import {reducerArgument, AppStatesInterface} from '../../constants/interfaces';
+import {reducerArgument, AppStatesInterface} from '@constants/interfaces';
 const InitialAppState: AppStatesInterface = {
   authLoading: false,
   fetchingLoading: false,

@@ -3,13 +3,13 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Keyboard} from 'react-native';
 import {HeaderBackButton} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Actions from '../../redux/actions';
+import Actions from '@redux/actions';
 import {
   widthPercentageToDP as WP,
   heightPercentageToDP as HP,
 } from 'react-native-responsive-screen';
 import {useDispatch} from 'react-redux';
-import {Colors} from '../../constants';
+import {Colors} from '@constants';
 import {
   CodeField,
   Cursor,

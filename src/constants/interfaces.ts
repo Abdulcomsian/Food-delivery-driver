@@ -6,6 +6,7 @@ export interface InitialUserInterface {
   loggedIn: boolean;
   online: boolean;
   detail: object;
+  achievementDetail: object;
 }
 
 export interface OrdersStatesInterface {
@@ -19,4 +20,11 @@ export interface AppStatesInterface {
   authLoading: boolean;
   fetchingLoading: boolean;
   locationEnabled: boolean;
+}
+export interface userModel {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
 }

@@ -1,24 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Fragment, useState, useEffect} from 'react';
 import {
-  View,
-  Image,
-  StyleSheet,
-  Text,
   TouchableOpacity,
-  ViewStyle,
+  StyleSheet,
   ImageStyle,
   ScrollView,
-  Modal,
+  ViewStyle,
   Platform,
+  Image,
+  View,
+  Text,
+  Modal,
 } from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
-
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import getShadow from '../utils/shadow';
-import {Colors, Images, GOOGLE_MAPS_APIKEY} from '../constants';
+import getShadow from '@utils/shadow';
+import {Colors, Images, GOOGLE_MAPS_APIKEY, TextFamily} from '@constants';
 import Button from './buttons';
-import textFamily from '../constants/textFamily';
 type coordinate =
   | {
       latitude: number;
@@ -358,7 +356,7 @@ const TextWithIcon = ({
         <Text
           style={{
             color: subtitle !== '' ? Colors.Grey7 : Colors.black,
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: 17,
           }}>
           {title}
@@ -369,7 +367,7 @@ const TextWithIcon = ({
           style={{
             marginLeft: 33,
             fontSize: 17,
-            fontFamily: textFamily.ROBOTO_REGULAR,
+            fontFamily: TextFamily.ROBOTO_REGULAR,
             color: Colors.dark,
             marginTop: 5,
           }}
@@ -534,7 +532,7 @@ const Item1 = ({
       )}
       <Text
         style={{
-          fontFamily: textFamily.ROBOTO_BOLD,
+          fontFamily: TextFamily.ROBOTO_BOLD,
           fontSize: 17,
           textAlign: 'center',
           marginVertical: 10,
@@ -544,7 +542,7 @@ const Item1 = ({
       <Text
         numberOfLines={1}
         style={{
-          fontFamily: textFamily.ROBOTO_REGULAR,
+          fontFamily: TextFamily.ROBOTO_REGULAR,
           fontSize: 11,
           width: '100%',
           textAlign: 'center',
@@ -866,7 +864,7 @@ const orderRequestStyle = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: textFamily.ROBOTO_BLACK,
+    fontFamily: TextFamily.ROBOTO_BLACK,
     color: Colors.green,
     alignSelf: 'center',
     textAlign: 'center',
@@ -910,13 +908,13 @@ const limitModal = StyleSheet.create({
   },
   heading: {
     color: Colors.green,
-    fontFamily: textFamily.ROBOTO_BLACK,
+    fontFamily: TextFamily.ROBOTO_BLACK,
     fontSize: 24,
     textAlign: 'center',
   },
   subHeading: {
     color: Colors.dark,
-    fontFamily: textFamily.ROBOTO_REGULAR,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
     fontSize: 17,
     textAlign: 'center',
     marginVertical: 30,

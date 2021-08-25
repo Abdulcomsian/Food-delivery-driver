@@ -8,13 +8,13 @@ import {
 import {Text, View, Switch, Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 //-------------------------------------------------------------
-import Home from '../../screens/home';
-import Notifications from '../../screens/notifications';
-import Profile from '../../screens/profile';
-import Commission from '../../screens/commission';
-import OrdersHistory from '../../screens/ordersHistory';
-import {Colors, TextFamily} from '../../constants';
-import {Buttons} from '../../components';
+import Home from '@screens/home';
+import Notifications from '@screens/notifications';
+import Profile from '@screens/profile';
+import Commission from '@screens/commission';
+import OrdersHistory from '@screens/ordersHistory';
+import {Colors, TextFamily} from '@constants';
+import {Buttons} from '@components';
 import {navigationRef} from '../navigationHelper';
 //--------------------------------------------------------------
 import {
@@ -22,7 +22,7 @@ import {
   AppStatesInterface,
   OrdersStatesInterface,
 } from '../../constants/interfaces';
-import ACTIONS from '../../redux/actions';
+import ACTIONS from '@redux/actions';
 //--------------------------------------------------------------
 const {Navigator, Screen} = createDrawerNavigator();
 
@@ -104,16 +104,16 @@ const CustomDrawerContent = props => {
               ACTIONS.incomingOrder({
                 id: 888,
                 hotel: {
-                  latitude: orderOrigin.latitude + 0.007,
-                  longitude: orderOrigin.longitude,
+                  latitude: orderOrigin?.latitude + 0.007,
+                  longitude: orderOrigin?.longitude,
                 },
                 destination: {
-                  latitude: orderOrigin.latitude - 0.007,
-                  longitude: orderOrigin.longitude,
+                  latitude: orderOrigin?.latitude - 0.007,
+                  longitude: orderOrigin?.longitude,
                 },
                 origin: {
-                  latitude: orderOrigin.latitude,
-                  longitude: orderOrigin.longitude,
+                  latitude: orderOrigin?.latitude,
+                  longitude: orderOrigin?.longitude,
                 },
                 items: [],
               })(dispatch);

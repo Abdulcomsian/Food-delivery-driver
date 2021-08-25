@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, Platform} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-import {Colors} from '../../constants';
-import {Headers} from '../../components';
+import {Colors} from '@constants';
+import {Headers} from '@components';
 const NotificationScreen = ({
   navigation,
   route,

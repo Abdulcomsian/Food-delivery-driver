@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  TouchableOpacity,
-  Text,
   GestureResponderEvent,
+  TouchableOpacity,
   ViewStyle,
   TextStyle,
   Platform,
+  Text,
 } from 'react-native';
-import {Colors} from '../constants';
+import {Colors} from '@constants';
 
 const ButtonA = ({
   style = {},

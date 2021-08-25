@@ -5,10 +5,9 @@ import {View, TouchableOpacity, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Images} from '../constants';
+import {Images, Colors} from '@constants';
 //---------------------------------------------------------------------
-import Home from '../screens/locationSwitcher';
-import {Colors} from '../constants';
+import Home from '@screens/locationSwitcher';
 //---------------------------------------------------------------------
 const {Navigator, Screen} = createBottomTabNavigator();
 

@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
-import {HeaderBackButton} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-import {Colors} from '../../constants';
-import {Input} from '../../components';
-import Hooks from '../../Hooks';
+import {Colors} from '@constants';
+import APIs from '@utils/APIs';
+import {Input} from '@components';
+import Hooks from '@hooks';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
   // const [phone, setPhone] = useState<string>('');
@@ -20,6 +20,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [passwordErr, setPasswordErr] = useState<string>('');
 
   const [keyboardHeight] = Hooks.useKeyboard();
+  
   //console.log('Number', phone.replace(/\s/g, ''));
   return (
     <View

@@ -3,8 +3,8 @@ import React, {useState, useEffect, useRef, Fragment} from 'react';
 import {View, Image, useWindowDimensions, Platform} from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, Circle} from 'react-native-maps';
-import getShadow from '../utils/shadow';
-import {Colors, Images, GOOGLE_MAPS_APIKEY} from '../constants';
+import getShadow from '@utils/shadow';
+import {Colors, Images, GOOGLE_MAPS_APIKEY} from '@constants';
 
 type coordinate =
   | {

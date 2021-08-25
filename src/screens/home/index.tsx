@@ -1,18 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  PermissionsAndroid,
   StyleSheet,
+  Platform,
   View,
   Alert,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSelector, useDispatch} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
-import getShadow from '../../utils/shadow';
-import {navigationRef} from '../../navigator/navigationHelper';
+import getShadow from '@utils/shadow';
+import {navigationRef} from '@navigator/navigationHelper.ts';
 import {
   Headers,
   Cards,
@@ -20,15 +20,15 @@ import {
   GoogleMap,
   BottomSheet,
   Special,
-} from '../../components';
-import {Colors} from '../../constants';
+} from '@components';
+import {Colors} from '@constants';
 import {
   InitialUserInterface,
   OrdersStatesInterface,
   AppStatesInterface,
-} from '../../constants/interfaces';
-import {getStatus} from '../../utils/libs';
-import ACTIONS from '../../redux/actions';
+} from '@constants/interfaces';
+import {getStatus} from '@utils/libs';
+import ACTIONS from '@redux/actions';
 
 const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const {bottom} = useSafeAreaInsets();

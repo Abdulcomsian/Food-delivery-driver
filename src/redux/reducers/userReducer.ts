@@ -1,12 +1,10 @@
-import ActionType from '../types';
-import {
-  InitialUserInterface,
-  reducerArgument,
-} from '../../constants/interfaces';
+import ActionType from '@redux/types';
+import {InitialUserInterface, reducerArgument} from '@constants/interfaces';
 const InitialUserState: InitialUserInterface = {
   loggedIn: false,
-  online: false,
   detail: {},
+  achievementDetail: {},
+  online: false,
 };
 
 export default (state = InitialUserState, {type, payload}: reducerArgument) => {
