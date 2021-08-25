@@ -12,7 +12,7 @@ import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSelector, useDispatch} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import getShadow from '@utils/shadow';
-import {navigationRef} from '@navigator/navigationHelper.ts';
+import {navigationRef} from '@navigatorHelper';
 import {
   Headers,
   Cards,
