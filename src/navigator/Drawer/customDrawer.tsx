@@ -35,6 +35,10 @@ const CustomDrawerContent = props => {
       ...ORDERS,
     }),
   );
+  const closeIt = () => {
+    const {closeDrawer} = props.navigation;
+    closeDrawer();
+  };
   return (
     <Fragment>
       <DrawerContentScrollView {...props}>
@@ -76,7 +80,7 @@ const CustomDrawerContent = props => {
                 },
                 items: [],
               })(dispatch);
-              setTimeout(props.navigation.closeDrawer, 300);
+              setTimeout(closeIt, 300);
             }}
           />
         </View>
@@ -104,12 +108,10 @@ const CustomDrawerContent = props => {
           }}
           ios_backgroundColor={Colors.red2}
           onValueChange={() => {
-            if (locationEnabled) {
-              ACTIONS.userToggleOnlineStatus()(dispatch);
-              setTimeout(props.navigation.closeDrawer, 300);
-            } else {
-              navigationRef.current.navigate('locationswitcher');
-            }
+            locationEnabled
+              ? (ACTIONS.userToggleOnlineStatus()(dispatch),
+                setTimeout(closeIt, 300))
+              : navigationRef.current.navigate('locationswitcher');
           }}
         />
         <StatusText title={'Online'} activeColor={Colors.red} isTrue={online} />

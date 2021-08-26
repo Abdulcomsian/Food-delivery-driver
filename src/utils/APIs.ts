@@ -55,6 +55,62 @@ const signIn = ({email, password}: {password: string; email: string}) => {
     })
     .catch(() => null);
 };
+const getNotifications = ({
+  uid,
+  page = 1,
+  limit = 20,
+}: {
+  uid: number;
+  page?: number;
+  limit?: number;
+}) => {
+  return axios
+    .get(`/notifications?uid=${uid}&_page=${page}&_limit=${limit}`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
+};
+const readNotification = ({id}: {id: number}) => {
+  return axios
+    .patch('/notifications/' + id, {read: true})
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 || status === 201 ? data : null;
+    })
+    .catch(() => null);
+};
+const removeNotification = ({id}: {id: number}) => {
+  return axios
+    .delete('/notifications/' + id)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 || status === 201 ? data : null;
+    })
+    .catch(() => null);
+};
+const getOrderList = ({
+  uid,
+  page = 1,
+  limit = 20,
+}: {
+  uid: number;
+  page?: number;
+  limit?: number;
+}) => {
+  return axios
+    .get(`/orders?uid=${uid}&_page=${page}&_limit=${limit}`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
+};
 export default {
   signIn,
+  getNotifications,
+  getOrderList,
+  readNotification,
+  removeNotification,
 };

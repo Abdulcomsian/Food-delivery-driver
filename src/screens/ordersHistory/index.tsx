@@ -1,11 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Table, Row} from 'react-native-table-component';
 import {Colors, TextFamily} from '@constants';
 import {Headers} from '@components';
+import APIS from '@utils/APIs';
+const isCloseToBottom = (
+  {bottom, top}: {top: number; bottom: number},
+  {layoutMeasurement, contentOffset, contentSize},
+) => {
+  const paddingToBottom = 20 + (bottom + top);
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
 const OrderHistoryScreen = ({
   navigation,
   route,
@@ -15,9 +33,49 @@ const OrderHistoryScreen = ({
 }) => {
   const {top, bottom} = useSafeAreaInsets();
   const [orders, setOrders] = useState([]);
-  useEffect(() => {
+  const [page, setPage] = useState<number>(1);
+  const [isMore, setIsMore] = useState<boolean>(true);
+  const [fetching, setFetching] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const FirstTimeLoad = (refrshing: boolean = false) => {
+    refrshing && (setFetching(true), setRefreshing(true));
+    APIS.getOrderList({uid: 1})
+      .then(r => {
+        if (Array.isArray(r)) {
+          setOrders(DataToRender(r));
+          setIsMore(r.length === 20);
+          setPage(2);
+        } else if (refrshing) {
+          setIsMore(false);
+          setPage(1);
+        }
+      })
+      .finally(() => {
+        setFetching(false);
+        refrshing && setRefreshing(false);
+      });
+  };
+  const appendMore = () => {
+    if (isMore && !fetching) {
+      setFetching(true);
+      APIS.getOrderList({uid: 1, page})
+        .then(r => {
+          if (Array.isArray(r)) {
+            r.length > 0 &&
+              setOrders([...orders, ...DataToRender(r, orders.length)]);
+            setIsMore(r.length === 20);
+            setPage(page + 1);
+          }
+        })
+        .finally(() => {
+          setFetching(false);
+        });
+    }
+  };
+  useEffect(FirstTimeLoad, []);
+  const DataToRender = (arrayToBeRender: Array, lastItem: number = 0) => {
     const arrLoc = [];
-    DemoData.forEach((item, idex) => {
+    arrayToBeRender.forEach((item: object, idex: number) => {
       arrLoc.push([
         <Text
           numberOfLines={1}
@@ -26,7 +84,7 @@ const OrderHistoryScreen = ({
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
-          {idex + 1}
+          {idex + 1 + lastItem}
         </Text>,
         <Text
           numberOfLines={1}
@@ -58,97 +116,68 @@ const OrderHistoryScreen = ({
         </Text>,
       ]);
     });
-    setOrders(arrLoc);
-  }, []);
-  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
+    return arrLoc;
   };
   return (
     <View style={OrderHistoryStyle.container}>
       <Headers.HeaderA title="Orders History" navigation={navigation} />
-      <Table>
-        <Row
-          data={tableConstant.tableHead}
-          widthArr={tableConstant.widthArr}
-          style={OrderHistoryStyle.head}
-          textStyle={OrderHistoryStyle.text}
-        />
-      </Table>
-      <ScrollView
-        onScroll={({nativeEvent}) => {
-          if (isCloseToBottom(nativeEvent)) {
-            //enableSomeButton();
-          }
-        }}
-        scrollEventThrottle={400}
-        style={OrderHistoryStyle.dataWrapper}
-        contentContainerStyle={{alignItems: 'center'}}>
-        <Table>
-          {orders.map((itemRow, index) => (
+      <ScrollView horizontal>
+        <View>
+          <Table>
             <Row
-              key={index}
-              data={itemRow}
+              data={tableConstant.tableHead}
               widthArr={tableConstant.widthArr}
-              style={[
-                OrderHistoryStyle.ListItem,
-                index % 2 && {backgroundColor: Colors.Grey2},
-              ]}
-              textStyle={[{color: Colors.black}]}
+              style={OrderHistoryStyle.head}
+              textStyle={OrderHistoryStyle.text}
             />
-          ))}
-        </Table>
+          </Table>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => {
+                  FirstTimeLoad(true);
+                }}
+              />
+            }
+            onScroll={({nativeEvent}) => {
+              if (isCloseToBottom({bottom, top: 0}, nativeEvent)) {
+                //enableSomeButton();
+                console.log('In The End');
+                appendMore();
+              }
+            }}
+            scrollEventThrottle={400}
+            style={OrderHistoryStyle.dataWrapper}
+            contentContainerStyle={{
+              alignItems: 'center',
+              paddingBottom: bottom,
+            }}>
+            <Table>
+              {orders.map((itemRow, index) => (
+                <Row
+                  key={index}
+                  data={itemRow}
+                  widthArr={tableConstant.widthArr}
+                  style={[
+                    OrderHistoryStyle.ListItem,
+                    index % 2 && {backgroundColor: Colors.Grey2},
+                  ]}
+                  textStyle={[{color: Colors.black}]}
+                />
+              ))}
+            </Table>
+          </ScrollView>
+        </View>
       </ScrollView>
     </View>
   );
 };
 
-const ItemView = ({item, index}) => {
-  return (
-    <View style={OrderHistoryStyle.ListItem}>
-      <View style={{flex: 0.5, justifyContent: 'center'}}>
-        <Text
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            fontFamily: TextFamily.ROBOTO_THIN,
-            fontSize: Platform.OS === 'android' ? 16 : 15,
-          }}>
-          {index + 1}
-        </Text>
-      </View>
-      <View style={{flex: 2, justifyContent: 'center'}}>
-        <Text style={{textAlign: 'center'}}>{item.name}</Text>
-      </View>
-      <View style={{flex: 3, justifyContent: 'center'}}>
-        <Text style={{textAlign: 'center'}}>{item.amount}</Text>
-      </View>
-      <View style={{width: 100, justifyContent: 'center'}}>
-        <Text style={{textAlign: 'center', width: '100%'}} numberOfLines={1}>
-          {item.pickedFrom}
-        </Text>
-      </View>
-    </View>
-  );
-};
 const tableConstant = {
   tableHead: ['#', 'Name', 'Amount', 'Picked from'],
-  widthArr: [WP(15) - 30, WP(30), WP(20), WP(35)],
+  widthArr: [WP(15) - 30, WP(30), WP(20), WP(50)],
 };
-const DemoData = [
-  {
-    name: 'Jame bond',
-    amount: 445,
-    pickedFrom: 'Ál Habibi jhjhs wdhgvyg wwhv wefweygv ffufu hufguyg gug',
-  },
-  {name: 'Jame bond 007 XXX', amount: 449, pickedFrom: 'Ál Habibi'},
-  {name: 'Jame bond', amount: 25, pickedFrom: 'Ál Habibi'},
-  {name: 'Jame bond', amount: 50, pickedFrom: 'Ál Habibi'},
-  {name: 'Jame bond', amount: 100, pickedFrom: 'Ál Habibi'},
-];
 const OrderHistoryStyle = StyleSheet.create({
   container: {
     flex: 1,
