@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "930387335714",
+    "firebase_url": "https://africeat-version2-default-rtdb.firebaseio.com",
+    "project_id": "africeat-version2",
+    "storage_bucket": "africeat-version2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930387335714:android:3140db3a43c4f8e8e2487b",
+        "android_client_info": {
+          "package_name": "com.africeat_rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930387335714-qvvmve4snild9it95da63t29g7rpr68h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4xcCejQaRBZ1uTeP5l2L2rnnOC6_XLwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930387335714-qvvmve4snild9it95da63t29g7rpr68h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930387335714-g7370ov1m1mdjnkgh0d66nq192vek76t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "africeat.com.driver",
+                "app_store_id": "1529587330"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
