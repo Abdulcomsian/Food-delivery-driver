@@ -1,135 +1,53 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Alert,
-  Linking,
-  Platform,
-  PermissionsAndroid,
-  ToastAndroid,
-} from 'react-native';
+import {View, Text, Image, Platform, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   widthPercentageToDP as WP,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Geolocation from 'react-native-geolocation-service';
 import {Colors, Images} from '@constants';
 import {Buttons} from '@components';
-import appConfig from '../../../app.json';
 import Actions from '@redux/actions';
+import {getLocation} from '@utils/libs';
 import {useDispatch} from 'react-redux';
-const LocationSwitcher = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
+const LocationSwitcher = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const hasPermissionIOS = async () => {
-    const openSetting = () => {
-      Linking.openSettings().catch(() => {
-        Alert.alert('Unable to open settings');
-      });
-    };
-    const status = await Geolocation.requestAuthorization('whenInUse');
-
-    if (status === 'granted') {
-      return true;
-    }
-
-    if (status === 'denied') {
-      Alert.alert('Location permission denied');
-    }
-
-    if (status === 'disabled') {
-      Alert.alert(
-        `Turn on Location Services to allow "${appConfig.displayName}" to determine your location.`,
-        '',
-        [
-          {text: 'Go to Settings', onPress: openSetting},
-          {text: "Don't Use Location", onPress: () => {}},
-        ],
-      );
-    }
-
-    return false;
+  const fff = (pos: any) => {
+    console.log('Postition', pos);
+    Actions.letsEnableLocation()(dispatch);
+    navigation.goBack();
   };
-
-  const hasLocationPermission = async () => {
-    if (Platform.OS === 'ios') {
-      const hasPermission = await hasPermissionIOS();
-      return hasPermission;
-    }
-
-    if (Platform.OS === 'android' && Platform.Version < 23) {
-      return true;
-    }
-
-    const hasPermission = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    if (hasPermission) {
-      return true;
-    }
-
-    const status = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    if (status === PermissionsAndroid.RESULTS.GRANTED) {
-      return true;
-    }
-
-    if (status === PermissionsAndroid.RESULTS.DENIED) {
-      ToastAndroid.show(
-        'Location permission denied by user.',
-        ToastAndroid.LONG,
-      );
-    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      ToastAndroid.show(
-        'Location permission revoked by user.',
-        ToastAndroid.LONG,
-      );
-    }
-
-    return false;
-  };
-
-  const getLocation = async () => {
-    const hasPermission = await hasLocationPermission();
-    if (!hasPermission) {
-      return;
-    }
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log(position);
-        Actions.letsEnableLocation()(dispatch);
-        navigation.goBack();
-      },
-      error => {
-        Alert.alert(`Code ${error.code}`, error.message);
-        console.log(error);
-      },
-      {
-        accuracy: {
-          android: 'balanced',
-          ios: 'nearestTenMeters',
-        },
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
-        distanceFilter: 0,
-        forceRequestLocation: true,
-        showLocationDialog: true,
-      },
-    );
-  };
+  // const getLocation = async (functionToPerf: Function) => {
+  //   const hasPermission = await hasLocationPermission();
+  //   if (!hasPermission) {
+  //     return;
+  //   }
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       functionToPerf(position);
+  //       console.log(position);
+  //       Actions.letsEnableLocation()(dispatch);
+  //       navigation.goBack();
+  //     },
+  //     error => {
+  //       Alert.alert(`Code ${error.code}`, error.message);
+  //       console.log(error);
+  //     },
+  //     {
+  //       accuracy: {
+  //         android: 'balanced',
+  //         ios: 'nearestTenMeters',
+  //       },
+  //       enableHighAccuracy: true,
+  //       timeout: 15000,
+  //       maximumAge: 10000,
+  //       distanceFilter: 0,
+  //       forceRequestLocation: true,
+  //       showLocationDialog: true,
+  //     },
+  //   );
+  // };
   return (
     <View
       style={[
@@ -145,7 +63,7 @@ const LocationSwitcher = ({
       <Buttons.ButtonA
         style={style.btnStyle}
         title={'USE MY LOCATION'}
-        onPress={getLocation}
+        onPress={() => getLocation(fff)}
       />
       <Buttons.ButtonA
         style={style.skipBtnStyle}

@@ -15,6 +15,8 @@ const BottomSheetSheetA = ({
   setStatus: Function;
 }) => {
   const {bottom} = useSafeAreaInsets();
+  const {detail, loggedIn} = useSelector(({USER}) => USER);
+
   const FilterBottomSheet = useRef<BottomSheet>(null);
   const snapFilterBottomPoints = useMemo(() => [0, 200 + bottom], []);
   const handleFilterBottomSheetChanges = useCallback((index: number) => {
@@ -53,10 +55,10 @@ const BottomSheetSheetA = ({
               <Image source={Images.avatar} style={style.avatar} />
               <View style={{marginLeft: 5}}>
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                  {'Jeremiah Curtis'}
+                  {loggedIn ? detail.name : ''}
                 </Text>
                 <Text style={{color: Colors.Grey5, fontSize: 14}}>
-                  {'123456'}
+                  {loggedIn ? detail.phone : ''}
                 </Text>
               </View>
             </View>

@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useRef} from 'react';
+import React, {Fragment, useRef, useState} from 'react';
 import {
   TouchableOpacity,
   ViewStyle,
   TextInput,
   Image,
   View,
+  KeyboardTypeOptions,
+  Text,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import {Colors, Images} from '@constants';
@@ -92,11 +94,9 @@ const NormalInputField = ({
   style = {},
   value = '',
   setValue = e => {},
-  setPasswordShow = e => {},
-  error = false,
+  error = '',
   placeholder = '',
   keyboardType = 'default',
-  passwordShow = true,
   passwordField = false,
 }: {
   style?: ViewStyle;
@@ -107,65 +107,76 @@ const NormalInputField = ({
   error?: string | boolean;
   passwordShow?: boolean;
   passwordField?: boolean;
-  keyboardType?: string;
+  keyboardType?: KeyboardTypeOptions;
 }) => {
-  const InputRef = useRef(null);
+  const [show, setShow] = useState(false);
   return (
-    <View
-      style={{
-        marginTop: 26,
-        borderRadius: 22,
-        borderWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderColor: error ? Colors.red : Colors.GreyTransparent5,
-        height: 48,
-        width: WP(100) - 50,
-        paddingHorizontal: 15,
-        backgroundColor: value.length ? Colors.white : Colors.GreyTransparent5,
-        ...style,
-      }}>
+    <View>
       <View
         style={{
-          flex: 1,
-          height: '100%',
+          marginTop: 26,
+          borderRadius: 22,
+          borderWidth: 1,
           flexDirection: 'row',
           alignItems: 'center',
+          borderColor: error ? Colors.red : Colors.GreyTransparent5,
+          height: 48,
+          width: WP(100) - 50,
+          paddingHorizontal: 15,
+          backgroundColor: value.length
+            ? Colors.white
+            : Colors.GreyTransparent5,
+          ...style,
         }}>
-        <TextInput
-          keyboardType={keyboardType}
-          secureTextEntry={!passwordShow}
+        <View
           style={{
             flex: 1,
-            height: 40,
-            //width: '100%',
-            paddingBottom: 0,
-            fontSize: 17,
-            fontFamily: 'Roboto-Regular',
-          }}
-          placeholder={placeholder}
-          placeholderTextColor={Colors.Grey7}
-        />
-        {passwordField && (
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={() => {
-              setPasswordShow(!passwordShow);
-            }}
+            height: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <TextInput
+            keyboardType={keyboardType}
+            secureTextEntry={passwordField ? show : false}
             style={{
-              height: 48,
-              width: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              source={passwordShow ? Images.invisible : Images.visible}
-              style={{height: 25, width: 25}}
-              resizeMode={'contain'}
-            />
-          </TouchableOpacity>
-        )}
+              flex: 1,
+              height: 40,
+              //width: '100%',
+              paddingBottom: 0,
+              fontSize: 17,
+              fontFamily: 'Roboto-Regular',
+            }}
+            value={value}
+            onChangeText={setValue}
+            placeholder={placeholder}
+            placeholderTextColor={Colors.Grey7}
+          />
+          {passwordField && (
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => {
+                setShow(!show);
+              }}
+              style={{
+                height: 48,
+                width: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={show ? Images.invisible : Images.visible}
+                style={{height: 25, width: 25}}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
+      {Boolean(error) && (
+        <Text style={{fontSize: 14, color: 'red', marginLeft: 10}}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 };

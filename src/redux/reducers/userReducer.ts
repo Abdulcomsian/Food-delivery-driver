@@ -13,7 +13,13 @@ export default (state = InitialUserState, {type, payload}: reducerArgument) => {
       return {
         ...state,
         loggedIn: true,
-        detail: payload.detail,
+        detail: payload,
+      };
+    }
+    case ActionType.HYDRID: {
+      return {
+        ...state,
+        detail: {...state.detail, ...payload},
       };
     }
     case ActionType.TOGGLE_ONLINE_STATUS: {

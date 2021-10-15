@@ -4,24 +4,47 @@ import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Colors} from '@constants';
-import APIs from '@utils/APIs';
+import {emailIsValid} from '@utils/libs';
 import {Input} from '@components';
 import Hooks from '@hooks';
+import {useDispatch} from 'react-redux';
+import Actions from '@redux/actions';
+import APIs from '@utils/APIs';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
+  const dispatch = useDispatch();
   // const [phone, setPhone] = useState<string>('');
   // const [phoneErr, setPhoneErr] = useState<string>('');
-
   const [email, setEmail] = useState<string>('');
   const [emailErr, setEmailErr] = useState<string>('');
-
   const [password, setPassword] = useState<string>('');
-  const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [passwordErr, setPasswordErr] = useState<string>('');
-
   const [keyboardHeight] = Hooks.useKeyboard();
-  
+
   //console.log('Number', phone.replace(/\s/g, ''));
+  const LocalValidate = () => {
+    if (!emailIsValid(email) || password.length < 8) {
+      password.length < 8 &&
+        setPasswordErr('Password must be greater then 7 characters');
+      !emailIsValid(email) && setEmailErr('Email is not valid');
+      return false;
+    }
+    TryToLogin();
+  };
+  const TryToLogin = () => {
+    APIs.signIn({email, password})
+      .then(RES => {
+        if (RES) {
+          console.log('ss',RES)
+          const {status, errMsg} = RES;
+          if (status) {
+            Actions.userAuthenticate(RES)(dispatch);
+          } else {
+          }
+        }
+      })
+      .finally(() => {});
+  };
   return (
     <View
       style={[loginStyle.container, {paddingTop: top, paddingBottom: bottom}]}>
@@ -50,31 +73,27 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       <Text style={loginStyle.title}>Login with your email and password</Text>
       <Text style={loginStyle.subTitle}>Enter your email and password</Text>
       <Input.NormalInputField
-        keyboardType={'email-address'}
+        keyboardType="email-address"
         placeholder="Email"
-        setValue={e => {
+        value={email}
+        setValue={(e: string) => {
           setEmail(e);
-          console.log('email', e);
           emailErr && setEmailErr('');
         }}
-        error={Boolean(emailErr)}
+        error={emailErr}
       />
       <Input.NormalInputField
         passwordField={true}
+        value={password}
         placeholder="Password"
-        passwordShow={passwordShow}
-        setPasswordShow={setPasswordShow}
-        setValue={e => {
+        setValue={(e: string) => {
           setPassword(e);
-          console.log('password', e);
           passwordErr && setPasswordErr('');
         }}
-        error={Boolean(passwordErr)}
+        error={passwordErr}
       />
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('phoneVerification', {email, password});
-        }}
+        onPress={LocalValidate}
         style={[
           loginStyle.btn,
           keyboardHeight === 0

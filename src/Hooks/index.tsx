@@ -4,8 +4,10 @@ import {Keyboard, KeyboardEvent} from 'react-native';
 const useKeyboard = (): [number] => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
-  const onKeyboardDidShow = (e: KeyboardEvent): void => {
-    setKeyboardHeight(e.endCoordinates.height);
+  const onKeyboardDidShow = ({
+    endCoordinates: {height},
+  }: KeyboardEvent): void => {
+    setKeyboardHeight(height);
   };
 
   const onKeyboardDidHide = (): void => {
@@ -13,11 +15,13 @@ const useKeyboard = (): [number] => {
   };
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    const kS = Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
+    const kH = Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
     return (): void => {
-      Keyboard.removeListener('keyboardDidShow', onKeyboardDidShow);
-      Keyboard.removeListener('keyboardDidHide', onKeyboardDidHide);
+      kS.remove();
+      kH.remove();
+      //Keyboard.removeListener('keyboardDidShow', onKeyboardDidShow);
+      //Keyboard.removeListener('keyboardDidHide', onKeyboardDidHide);
     };
   }, []);
 

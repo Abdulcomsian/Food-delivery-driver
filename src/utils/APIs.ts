@@ -1,6 +1,7 @@
-import Axios, {AxiosResponse, AxiosError} from 'axios';
+import Axios, {AxiosResponse} from 'axios';
+import {Store} from '@redux';
 //import {userModel, projectModel, targetModal, reminderModal} from '@constants/interfaces';
-const baseURL = 'http://localhost:3000/';
+const baseURL = 'http://food.accrualhub.com/api';
 const axios = Axios.create({
   baseURL,
   timeout: 3000,
@@ -16,9 +17,9 @@ const callBackFun = (title: string, error: object) => {
 //requestInterceptor
 axios.interceptors.request.use(
   config => {
-    if (config.data instanceof FormData) {
-      Object.assign(config.headers, config.data.getHeaders());
-    }
+    // if (config.data instanceof FormData) {
+    //   Object.assign(config.headers, config.data.getHeaders());
+    // }
     console.log(
       config.url + '\n',
       config.data ? JSON.stringify(config.data) : '',
@@ -40,21 +41,115 @@ axios.interceptors.response.use(
   },
   error => callBackFun('ResponseError', error),
 );
-//requestMethods
-const signIn = ({email, password}: {password: string; email: string}) => {
+const getCustomHeader = (multipart: boolean = false) => {
+  const {
+    USER: {detail, loggedIn},
+  } = Store.getState();
+  return {
+    //timeout,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': multipart ? 'multipart/form-data' : 'application/json',
+      Authorization: loggedIn ? `Bearer ${detail.token}` : undefined,
+    },
+  };
+};
+
+//-----------APIS
+const signIn = (payload: {password: string; email: string}) => {
   return axios
-    .get('/users?email=' + email)
+    .post('/driver/auth/gettoken', payload, {...getCustomHeader()})
     .then(({data, status}: AxiosResponse) => {
-      if (status === 200 && Array.isArray(data) && data.length > 0) {
-        const {password: dbPassword} = data[0];
-        return dbPassword === password
-          ? data[0]
-          : {error: 'Password not correct'};
-      }
-      return {error: 'Email not correct'};
+      return status === 200 ? data : null;
     })
     .catch(() => null);
 };
+const toggleOff_OnLine = (
+  isOnline: boolean = false,
+  lat: number = 0,
+  long: number = 0,
+) => {
+  const coords = `/${lat}/${long}`;
+  return axios
+    .get(
+      `/driver/auth/driver${isOnline ? 'on' : 'off'}line${
+        isOnline ? coords : ''
+      }`,
+      {
+        ...getCustomHeader(),
+      },
+    )
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const getDriverData = () => {
+  return axios
+    .get('/driver/auth/data', {...getCustomHeader()})
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const getOrders = () => {
+  return axios
+    .get('/driver/orders', {...getCustomHeader()})
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const getOrderDetail = (id: number) => {
+  return axios
+    .get('/driver/orders/order/' + id, {...getCustomHeader()})
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const getEarnings = () => {
+  return axios
+    .get('/driver/orders/earnings', {...getCustomHeader()})
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const orderQuest = (id: number, accept: boolean = true) => {
+  return axios
+    .get(`/driver/orders/${accept ? 'accept' : 'reject'}order/` + id, {
+      ...getCustomHeader(),
+    })
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const orderStatus = (orderId: number, status: number) => {
+  return axios
+    .get('/driver/orders/updateorderstatus/' + orderId + '/' + status, {
+      ...getCustomHeader(),
+    })
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+const orderLocation = (orderId: number, lat: number = 0, long: number = 0) => {
+  return axios
+    .get(
+      '/driver/orders/updateorderlocation/' + orderId + '/' + lat + '/' + long,
+      {
+        ...getCustomHeader(),
+      },
+    )
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 ? data : null;
+    })
+    .catch(() => null);
+};
+//----------Fake----------
 const getNotifications = ({
   uid,
   page = 1,
@@ -109,6 +204,15 @@ const getOrderList = ({
 };
 export default {
   signIn,
+  toggleOff_OnLine,
+  getDriverData,
+  orderLocation,
+  orderStatus,
+  orderQuest,
+  getEarnings,
+  getOrderDetail,
+  getOrders,
+  //-----------------
   getNotifications,
   getOrderList,
   readNotification,

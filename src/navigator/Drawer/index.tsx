@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 //-------------------------------------------------------------
 import Home from '@screens/home';
@@ -9,10 +10,22 @@ import Commission from '@screens/commission';
 import OrdersHistory from '@screens/ordersHistory';
 //-------------------------------------------------------------
 import {Colors, TextFamily} from '@constants';
+import Actions from '@redux/actions';
+import APIs from '@utils/APIs';
 import CustomDrawerContent from './customDrawer';
 const {Navigator, Screen} = createDrawerNavigator();
 
 const Drawer = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    APIs.getDriverData().then(RES => {
+      if (RES) {
+        const {data, status} = RES;
+        status && Actions.userHydrid(data)(dispatch);
+        status && console.log('Dta', data);
+      }
+    });
+  }, []);
   return (
     <Navigator
       drawerType="back"

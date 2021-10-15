@@ -1,4 +1,6 @@
 import ActionTypes from './types';
+import APIs from '@utils/APIs';
+import {getLocation} from '@utils/libs';
 //=======App Loading Actions
 const setLoader = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.FETCHING_LOADING, payload});
@@ -10,9 +12,26 @@ const letsEnableLocation = () => (dispatch: Function) => {
 const userAuthenticate = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.USER_AUTHORIZE, payload});
 };
-const userToggleOnlineStatus = () => (dispatch: Function) => {
-  dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
+const userHydrid = (payload: any) => (dispatch: Function) => {
+  dispatch({type: ActionTypes.HYDRID, payload});
 };
+const userToggleOnlineStatus =
+  (STATUS: boolean = false) =>
+  (dispatch: Function) => {
+    if (!STATUS) {
+      APIs.toggleOff_OnLine(STATUS);
+      dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
+    } else {
+      getLocation(pos => {
+        if (pos) {
+          console.log('POS', pos.coords);
+          const {longitude, latitude} = pos.coords;
+          APIs.toggleOff_OnLine(STATUS, latitude, longitude);
+          dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
+        }
+      });
+    }
+  };
 const userLogout = () => (dispatch: Function) => {
   dispatch({type: ActionTypes.USER_LOGOUT});
 };
@@ -52,4 +71,5 @@ export default {
   addPendingToInProgress,
   letsEnableLocation,
   setOrderOrigin,
+  userHydrid,
 };

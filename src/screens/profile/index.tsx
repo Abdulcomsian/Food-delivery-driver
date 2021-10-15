@@ -1,12 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, Platform, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Colors, Images, TextFamily} from '@constants';
 import {Headers} from '@components';
+import {useSelector} from 'react-redux';
 const ProfileScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const {top, bottom} = useSafeAreaInsets();
+  const {detail, loggedIn} = useSelector(({USER}) => USER);
   return (
     <View style={[ProfileStyle.container, {paddingBottom: bottom}]}>
       <Headers.HeaderA
@@ -15,7 +17,9 @@ const ProfileScreen = ({navigation, route}: {navigation: any; route: any}) => {
         renderRight={false}
       />
       <Image source={Images.avatar} style={ProfileStyle.avatar} />
-      <Text style={ProfileStyle.profileName}>{'Profile Name'}</Text>
+      <Text style={ProfileStyle.profileName}>
+        {loggedIn ? detail.name : ''}
+      </Text>
       <View style={[ProfileStyle.rowify, {marginTop: 10}]}>
         <Text style={ProfileStyle.profileRate}>{'4.63'}</Text>
         <Image source={Images.star} style={ProfileStyle.star} />

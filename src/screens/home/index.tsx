@@ -313,7 +313,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
         status={online}
         setStatus={() => {
           if (locationEnabled) {
-            ACTIONS.userToggleOnlineStatus()(dispatch);
+            ACTIONS.userToggleOnlineStatus(!online)(dispatch);
           } else {
             navigationRef.current.navigate('locationswitcher');
           }

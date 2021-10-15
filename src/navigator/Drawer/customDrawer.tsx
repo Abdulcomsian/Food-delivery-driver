@@ -109,7 +109,7 @@ const CustomDrawerContent = props => {
           ios_backgroundColor={Colors.red2}
           onValueChange={() => {
             locationEnabled
-              ? (ACTIONS.userToggleOnlineStatus()(dispatch),
+              ? (ACTIONS.userToggleOnlineStatus(!online)(dispatch),
                 setTimeout(closeIt, 300))
               : navigationRef.current.navigate('locationswitcher');
           }}
