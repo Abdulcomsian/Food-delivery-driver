@@ -142,6 +142,7 @@ const NormalInputField = ({
               flex: 1,
               height: 40,
               //width: '100%',
+              color: Colors.dark,
               paddingBottom: 0,
               fontSize: 17,
               fontFamily: 'Roboto-Regular',

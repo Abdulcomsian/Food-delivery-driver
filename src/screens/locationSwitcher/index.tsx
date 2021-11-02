@@ -14,40 +14,10 @@ const LocationSwitcher = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
   const dispatch = useDispatch();
   const fff = (pos: any) => {
-    console.log('Postition', pos);
+    //console.log('Postition', pos);
     Actions.letsEnableLocation()(dispatch);
     navigation.goBack();
   };
-  // const getLocation = async (functionToPerf: Function) => {
-  //   const hasPermission = await hasLocationPermission();
-  //   if (!hasPermission) {
-  //     return;
-  //   }
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       functionToPerf(position);
-  //       console.log(position);
-  //       Actions.letsEnableLocation()(dispatch);
-  //       navigation.goBack();
-  //     },
-  //     error => {
-  //       Alert.alert(`Code ${error.code}`, error.message);
-  //       console.log(error);
-  //     },
-  //     {
-  //       accuracy: {
-  //         android: 'balanced',
-  //         ios: 'nearestTenMeters',
-  //       },
-  //       enableHighAccuracy: true,
-  //       timeout: 15000,
-  //       maximumAge: 10000,
-  //       distanceFilter: 0,
-  //       forceRequestLocation: true,
-  //       showLocationDialog: true,
-  //     },
-  //   );
-  // };
   return (
     <View
       style={[

@@ -143,7 +143,7 @@ const OrderHistoryScreen = ({
             onScroll={({nativeEvent}) => {
               if (isCloseToBottom({bottom, top: 0}, nativeEvent)) {
                 //enableSomeButton();
-                console.log('In The End');
+               // console.log('In The End');
                 appendMore();
               }
             }}

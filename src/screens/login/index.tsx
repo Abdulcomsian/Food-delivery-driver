@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
@@ -10,12 +10,14 @@ import Hooks from '@hooks';
 import {useDispatch} from 'react-redux';
 import Actions from '@redux/actions';
 import APIs from '@utils/APIs';
+import {updateMyToken} from '@utils/libs';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
   const dispatch = useDispatch();
   // const [phone, setPhone] = useState<string>('');
   // const [phoneErr, setPhoneErr] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [fcm_token, setDeviceToken] = useState<string>('');
   const [emailErr, setEmailErr] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordErr, setPasswordErr] = useState<string>('');
@@ -32,10 +34,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     TryToLogin();
   };
   const TryToLogin = () => {
-    APIs.signIn({email, password})
+    APIs.signIn({email, password, fcm_token})
       .then(RES => {
         if (RES) {
-          console.log('ss',RES)
+          //console.log('ss', RES);
           const {status, errMsg} = RES;
           if (status) {
             Actions.userAuthenticate(RES)(dispatch);
@@ -45,6 +47,13 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       })
       .finally(() => {});
   };
+  useEffect(() => {
+    //configure();
+    updateMyToken('émail', 'úserId', t => {
+      //console.log('token\n', t);
+      setDeviceToken(t);
+    });
+  }, []);
   return (
     <View
       style={[loginStyle.container, {paddingTop: top, paddingBottom: bottom}]}>

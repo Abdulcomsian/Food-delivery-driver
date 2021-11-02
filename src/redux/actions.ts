@@ -1,6 +1,7 @@
 import ActionTypes from './types';
 import APIs from '@utils/APIs';
-import {getLocation} from '@utils/libs';
+import Geolocation from 'react-native-geolocation-service';
+import {getLocation, putLocationListener} from '@utils/libs';
 //=======App Loading Actions
 const setLoader = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.FETCHING_LOADING, payload});
@@ -18,18 +19,22 @@ const userHydrid = (payload: any) => (dispatch: Function) => {
 const userToggleOnlineStatus =
   (STATUS: boolean = false) =>
   (dispatch: Function) => {
-    if (!STATUS) {
-      APIs.toggleOff_OnLine(STATUS);
+    // Geolocation.stopObserving();
+    if (STATUS) {
+      // getLocation(pos => {
+      //   if (pos) {
+      //     console.log('POS', pos.coords);
+      //     const {longitude, latitude} = pos.coords;
+      //APIs.toggleOff_OnLine(STATUS, latitude, longitude);
       dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
+      // putLocationListener(({latitude: lat, longitude: lng}) => {
+      //   APIs.toggleOff_OnLine(STATUS, lat, lng);
+      // });
+      //   }
+      // });
     } else {
-      getLocation(pos => {
-        if (pos) {
-          console.log('POS', pos.coords);
-          const {longitude, latitude} = pos.coords;
-          APIs.toggleOff_OnLine(STATUS, latitude, longitude);
-          dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
-        }
-      });
+      //APIs.toggleOff_OnLine(STATUS);
+      dispatch({type: ActionTypes.TOGGLE_ONLINE_STATUS});
     }
   };
 const userLogout = () => (dispatch: Function) => {
@@ -57,6 +62,9 @@ const orderCompleted = () => (dispatch: Function) => {
 const setOrderOrigin = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.SET_ORDER_ORIGIN, payload});
 };
+const updateLocation = (payload: any) => (dispatch: Function) => {
+  dispatch({type: ActionTypes.LOC_UPDATE, payload});
+};
 //=====Exporter
 export default {
   setLoader,
@@ -72,4 +80,5 @@ export default {
   letsEnableLocation,
   setOrderOrigin,
   userHydrid,
+  updateLocation,
 };

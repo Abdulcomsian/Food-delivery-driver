@@ -23,9 +23,6 @@ export default (
     case ActionType.SET_ORDER_ORIGIN: {
       return {...state, orderOrigin: payload};
     }
-    case ActionType.INCOMING_ORDER_REMOVE: {
-      return {...state, incomingOrder: null};
-    }
     case ActionType.INCOMING_ORDER: {
       return {...state, incomingOrder: payload};
     }

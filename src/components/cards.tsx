@@ -214,11 +214,14 @@ const OrderDeliveredCard = ({
   style = {},
   statusSetter = () => {},
   backPress = () => {},
+  currentOrder = {},
 }: {
+  currentOrder: any;
   style?: ViewStyle;
   statusSetter?: Function;
   backPress?: Function;
 }) => {
+  console.log('Ítems', currentOrder?.order.items);
   return (
     <View style={[orderRequestStyle.orderRequest, {...style}]}>
       <TouchableOpacity
@@ -236,7 +239,7 @@ const OrderDeliveredCard = ({
       <Text style={orderRequestStyle.title2}>Order Detail</Text>
       <View style={{maxHeight: 120}}>
         <ScrollView>
-          {[1, 2, 3, 4, 5].map((item, index, arr) => {
+          {currentOrder?.order.items.map((item, index, arr) => {
             return (
               <View
                 key={'ítem' + index}
@@ -289,12 +292,12 @@ const OrderDeliveredCard = ({
                 <Text
                   style={{flex: 1, alignSelf: 'center', fontSize: 16}}
                   numberOfLines={1}>
-                  dwdwfefwf dvwvw wfwf
+                  {item.name}
                 </Text>
                 <Text
                   style={{alignSelf: 'center', fontSize: 16, color: Colors.red}}
                   numberOfLines={1}>
-                  7
+                  {item.available}
                 </Text>
               </View>
             );
@@ -304,12 +307,12 @@ const OrderDeliveredCard = ({
       <View style={orderRequestStyle.line2} />
       <Text style={orderRequestStyle.title2}>Deliver To</Text>
       <TextWithIcon
-        title={'John Doe'}
+        title={currentOrder?.order?.client.name}
         icon={Images.user}
         style={{paddingVertical: 5}}
       />
       <TextWithIcon
-        title={'+44 123 456 7890'}
+        title={'Phone Number'}
         icon={Images.callRed}
         style={{paddingVertical: 5}}
       />
@@ -317,7 +320,13 @@ const OrderDeliveredCard = ({
         style={{paddingVertical: 5}}
         title={'Location'}
         icon={Images.locationPin}
-        subtitle={'wefwefvwefwf ewfwef wefwef wefwef wwef dwfwweffwfw wwefw'}
+        subtitle={currentOrder?.order?.address.address}
+      />
+      <TextWithIcon
+        style={{paddingVertical: 5}}
+        title={'Payment'}
+        icon={Images.recipt}
+        subtitle={'$ ' + currentOrder?.order?.order_price}
       />
       <Button.ButtonA
         onPress={statusSetter}
@@ -381,10 +390,12 @@ const TextWithIcon = ({
 const riderDashBoardCard = ({
   style = {},
   status = 2,
+  orderStatusChanger = () => {},
   statusSetter = () => {},
   distanceData = null,
   putitAsCurr = () => {},
 }: {
+  orderStatusChanger?: Function;
   style?: ViewStyle;
   status?: number;
   statusSetter?: Function;
@@ -452,6 +463,7 @@ const riderDashBoardCard = ({
           //-------->
           onPress={() => {
             statusSetter(4);
+            orderStatusChanger();
           }}
         />
       )}
@@ -483,7 +495,13 @@ const riderDashBoardCard = ({
           </Fragment>
         ) : (
           <Fragment>
-            <Item1 title="30 Mins" desc={'Duration Left'} icon={Images.clock} />
+            <Item1
+              title={`${
+                distanceData ? distanceData.duration.toFixed(1) : ''
+              } mins`}
+              desc={'Duration Left'}
+              icon={Images.clock}
+            />
             <Item1
               title={`${
                 distanceData ? distanceData.distance.toFixed(1) : ''
@@ -492,7 +510,9 @@ const riderDashBoardCard = ({
               icon={Images.speedometer}
             />
             <Item1
-              title="15 KM"
+              title={`${
+                distanceData ? distanceData.distance.toFixed(1) : ''
+              } KM`}
               desc={'Remaining Distance'}
               icon={Images.speedometer}
             />
@@ -570,7 +590,10 @@ const AnOtherOrderRequestCard = ({
   onPress = () => {},
   onPress2 = () => {},
   distanceData = null,
+  incomingOrder = null,
 }: {
+  distanceData?: any;
+  incomingOrder?: any;
   style?: ViewStyle;
   onPress?: Function;
   onPress2?: Function;
@@ -585,19 +608,26 @@ const AnOtherOrderRequestCard = ({
           <Image source={Images.close} style={{width: 16, height: 16}} />
         </TouchableOpacity>
         <Text style={orderRequestStyle.title}>Order Request</Text>
-        <TextWithIcon title={'John Doe'} icon={Images.user} />
-        <TextWithIcon title={'+44 123 456 7890'} icon={Images.callRed} />
+        <TextWithIcon
+          title={incomingOrder?.order?.client.name}
+          icon={Images.user}
+        />
+        <TextWithIcon title={'PHONE Number'} icon={Images.callRed} />
         <View style={orderRequestStyle.line} />
         <TextWithIcon
           title={'PickUp Location'}
           icon={Images.greenCircle}
           iconStyle={{width: 20, height: 20, marginRight: 13}}
-          subtitle={'123Lorem ipsum drive,lorem ipsum'}
+          subtitle={
+            incomingOrder?.order?.restorant.name +
+            ', ' +
+            incomingOrder?.order?.restorant.address
+          }
         />
         <TextWithIcon
           title={'Drop Location'}
           icon={Images.locationPin}
-          subtitle={'123Lorem ipsum drive,lorem ipsum sada asasdas'}
+          subtitle={incomingOrder?.order?.address.address}
         />
         <View style={orderRequestStyle.line} />
         <View
@@ -614,7 +644,11 @@ const AnOtherOrderRequestCard = ({
             desc={'Total Distance'}
             icon={Images.speedometer}
           />
-          <Item1 title="$.18.00" desc={'Guranteed'} icon={Images.recipt} />
+          <Item1
+            title={'$' + incomingOrder?.order?.order_price}
+            desc={'Guranteed'}
+            icon={Images.recipt}
+          />
         </View>
         <Button.ButtonA
           onPress={onPress}
@@ -636,7 +670,10 @@ const QueuedOrderRequestCard = ({
   onPress = () => {},
   onPress2 = () => {},
   distanceData = null,
+  incomingOrder = null,
 }: {
+  distanceData?: any;
+  incomingOrder?: any;
   style?: ViewStyle;
   onPress?: Function;
   onPress2?: Function;
@@ -682,20 +719,26 @@ const QueuedOrderRequestCard = ({
           <Image source={Images.close} style={{width: 16, height: 16}} />
         </TouchableOpacity>
         <Text style={orderRequestStyle.title}>Queued Order</Text>
-        <TextWithIcon title={'John Doe'} icon={Images.user} />
-        <TextWithIcon title={'+44 123 456 7890'} icon={Images.callRed} />
+        <TextWithIcon
+          title={incomingOrder?.order?.client.name}
+          icon={Images.user}
+        />
+        <TextWithIcon title={'PHONE NUmber'} icon={Images.callRed} />
         <View style={orderRequestStyle.line} />
         <TextWithIcon
           title={'PickUp Location'}
           icon={Images.greenCircle}
           iconStyle={{width: 20, height: 20, marginRight: 13}}
-          subtitle={'123Lorem ipsum drive,lorem ipsum'}
+          subtitle={
+            incomingOrder?.order?.restorant.name +
+            ', ' +
+            incomingOrder?.order?.restorant.address
+          }
         />
         <TextWithIcon
           title={'Drop Location'}
           icon={Images.locationPin}
-          iconStyle={{width: 20, height: 20, marginRight: 13}}
-          subtitle={'123Lorem ipsum drive,lorem ipsum sada asasdas'}
+          subtitle={incomingOrder?.order?.address.address}
         />
         <View style={orderRequestStyle.line} />
         <View
@@ -712,7 +755,11 @@ const QueuedOrderRequestCard = ({
             desc={'Total Distance'}
             icon={Images.speedometer}
           />
-          <Item1 title="$.18.00" desc={'Guranteed'} icon={Images.recipt} />
+          <Item1
+            title={'$' + incomingOrder?.order?.order_price}
+            desc={'Guranteed'}
+            icon={Images.recipt}
+          />
         </View>
         <Button.ButtonA
           onPress={onPress}

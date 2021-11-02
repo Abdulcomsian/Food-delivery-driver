@@ -8,4 +8,11 @@ const navigate = (name: string) => {
 const navigateWithParams = (name: string, params: object) => {
   navigationRef.current?.navigate(name, params);
 };
-export {navigate, navigationRef, navigateWithParams};
+const helperNavigate = (name: string, params: any = undefined) => {
+  if (navigationRef.current) {
+    params
+      ? navigationRef.current?.navigate(name, params)
+      : navigationRef.current?.navigate(name);
+  }
+};
+export {navigate, navigationRef, navigateWithParams, helperNavigate};

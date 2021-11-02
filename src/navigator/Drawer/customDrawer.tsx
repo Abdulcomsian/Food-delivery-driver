@@ -44,7 +44,7 @@ const CustomDrawerContent = props => {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      {online && (
+      {/* {online && (
         <View
           style={{
             width: '100%',
@@ -84,7 +84,7 @@ const CustomDrawerContent = props => {
             }}
           />
         </View>
-      )}
+      )} */}
       <View
         style={{
           alignSelf: 'center',

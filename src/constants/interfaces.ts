@@ -2,13 +2,16 @@ export interface reducerArgument {
   type: string;
   payload: any;
 }
+export interface coordinates {
+  latitude: number;
+  longitude: number;
+}
 export interface InitialUserInterface {
   loggedIn: boolean;
   online: boolean;
   detail: object;
   achievementDetail: object;
 }
-
 export interface OrdersStatesInterface {
   currentOrder: object | null;
   orderOrigin: object | null;
@@ -20,6 +23,7 @@ export interface AppStatesInterface {
   authLoading: boolean;
   fetchingLoading: boolean;
   locationEnabled: boolean;
+  coords: coordinates;
 }
 export interface userModel {
   id: number;

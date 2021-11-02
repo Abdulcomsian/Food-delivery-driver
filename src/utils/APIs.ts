@@ -2,6 +2,7 @@ import Axios, {AxiosResponse} from 'axios';
 import {Store} from '@redux';
 //import {userModel, projectModel, targetModal, reminderModal} from '@constants/interfaces';
 const baseURL = 'http://food.accrualhub.com/api';
+//const baseURL = 'http://192.168.18.91:8000/api';
 const axios = Axios.create({
   baseURL,
   timeout: 3000,
@@ -56,7 +57,11 @@ const getCustomHeader = (multipart: boolean = false) => {
 };
 
 //-----------APIS
-const signIn = (payload: {password: string; email: string}) => {
+const signIn = (payload: {
+  password: string;
+  email: string;
+  fcm_token: string;
+}) => {
   return axios
     .post('/driver/auth/gettoken', payload, {...getCustomHeader()})
     .then(({data, status}: AxiosResponse) => {
@@ -126,9 +131,9 @@ const orderQuest = (id: number, accept: boolean = true) => {
     })
     .catch(() => null);
 };
-const orderStatus = (orderId: number, status: number) => {
+const orderStatus = (orderId: number, stats: number) => {
   return axios
-    .get('/driver/orders/updateorderstatus/' + orderId + '/' + status, {
+    .get('/driver/orders/updateorderstatus/' + orderId + '/' + stats, {
       ...getCustomHeader(),
     })
     .then(({data, status}: AxiosResponse) => {
@@ -206,12 +211,12 @@ export default {
   signIn,
   toggleOff_OnLine,
   getDriverData,
+  getOrderDetail,
+  getOrders,
   orderLocation,
   orderStatus,
   orderQuest,
   getEarnings,
-  getOrderDetail,
-  getOrders,
   //-----------------
   getNotifications,
   getOrderList,

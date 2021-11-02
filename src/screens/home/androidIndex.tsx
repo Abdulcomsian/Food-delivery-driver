@@ -53,7 +53,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
   useEffect(() => {
     setStatus(online ? 1 : 0);
   }, [online]);
-  console.log('Location', current);
+  //console.log('Location', current);
   return (
     <View style={style.screenCont}>
       <Headers.HeaderA
