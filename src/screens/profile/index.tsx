@@ -16,7 +16,17 @@ const ProfileScreen = ({navigation}: {navigation: any}) => {
         navigation={navigation}
         renderRight={false}
       />
-      <ImageTaker photoSetter={({mime, path}) => {}}>
+      <ImageTaker
+        photoSetter={({mime, path}) => {
+          console.log('Pic', path);
+          // const imageData = new FormData();
+          // imageData.append('image', {
+          //   uri: Platform.OS === 'ios' ? path.replace('file://', '') : path,
+          //   type: mime,
+          //   name: 'user_avatar.jpg',
+          // });
+          //imageData goes to Api
+        }}>
         <Image source={Images.avatar} style={ProfileStyle.avatar} />
       </ImageTaker>
       <Text style={ProfileStyle.profileName}>
