@@ -7,7 +7,6 @@ import {
   Platform,
   TouchableOpacity,
   Pressable,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
 import FlatList from 'react-native-swipeable-list';
@@ -17,6 +16,7 @@ import {Colors} from '@constants';
 import {Headers} from '@components';
 import APIs from '@utils/APIs';
 import {getFormatedDate} from '@utils/libs';
+import Json from '../../db';
 import {useSelector} from 'react-redux';
 const NotificationScreen = ({navigation}: {navigation: object}) => {
   const SwipeFlat = useRef(null);
@@ -29,28 +29,29 @@ const NotificationScreen = ({navigation}: {navigation: object}) => {
 
   //-----------Methods
   const FirstTimeLoad = (refrshing: boolean = false) => {
-    refrshing && (setFetching(true), setRefreshing(true));
-    APIs.getNotifications({uid: 1})
-      .then(r => {
-        if (Array.isArray(r)) {
-          setNotifications(r);
-          setIsMore(r.length === 20);
-          setPage(2);
-        } else if (refrshing) {
-          setIsMore(false);
-          setPage(1);
-        }
-      })
-      .finally(() => {
-        setFetching(false);
-        refrshing && setRefreshing(false);
-      });
+    setNotifications(Json);
+    // refrshing && (setFetching(true), setRefreshing(true));
+    // APIs.getNotifications({uid: 1})
+    //   .then(r => {
+    //     if (Array.isArray(r)) {
+    //       setNotifications(r);
+    //       setIsMore(r.length === 20);
+    //       setPage(2);
+    //     } else if (refrshing) {
+    //       setIsMore(false);
+    //       setPage(1);
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setFetching(false);
+    //     refrshing && setRefreshing(false);
+    //   });
   };
   const markAsRead = (id: number, idx: number) => {
-    const locNotifications = [...notifications];
-    locNotifications[idx].read = true;
-    setNotifications(locNotifications);
-    APIs.readNotification({id});
+    // const locNotifications = [...notifications];
+    // locNotifications[idx].read = true;
+    // setNotifications(locNotifications);
+    // APIs.readNotification({id});
   };
   const onDelete = (data: object, idx: number) => {
     const {id} = data;
@@ -61,20 +62,20 @@ const NotificationScreen = ({navigation}: {navigation: object}) => {
     SwipeFlat.current?._onClose(idx);
   };
   const appendMore = () => {
-    if (isMore && !fetching) {
-      setFetching(true);
-      APIs.getNotifications({uid: 1, page})
-        .then(r => {
-          if (Array.isArray(r)) {
-            r.length > 0 && setNotifications([...notifications, ...r]);
-            setIsMore(r.length === 20);
-            setPage(page + 1);
-          }
-        })
-        .finally(() => {
-          setFetching(false);
-        });
-    }
+    // if (isMore && !fetching) {
+    //   setFetching(true);
+    //   APIs.getNotifications({uid: 1, page})
+    //     .then(r => {
+    //       if (Array.isArray(r)) {
+    //         r.length > 0 && setNotifications([...notifications, ...r]);
+    //         setIsMore(r.length === 20);
+    //         setPage(page + 1);
+    //       }
+    //     })
+    //     .finally(() => {
+    //       setFetching(false);
+    //     });
+    // }
   };
   //-----------ViewComponent
   const QuickActions = ({item, index}: {item: object; index: number}) => {
@@ -83,23 +84,23 @@ const NotificationScreen = ({navigation}: {navigation: object}) => {
         <View style={NotificationStyle.button}>
           <Pressable
             onPress={() => {
-              Alert.alert(
-                'Are you sure?',
-                'You want to delete this customer?',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Deleted',
-                    onPress: () => onDelete(item, index),
-                    style: 'destructive',
-                  },
-                ],
-                {cancelable: false},
-              );
+              // Alert.alert(
+              //   'Are you sure?',
+              //   'You want to delete this customer?',
+              //   [
+              //     {
+              //       text: 'Cancel',
+              //       onPress: () => console.log('Cancel Pressed'),
+              //       style: 'cancel',
+              //     },
+              //     {
+              //       text: 'Deleted',
+              //       onPress: () => onDelete(item, index),
+              //       style: 'destructive',
+              //     },
+              //   ],
+              //   {cancelable: false},
+              // );
             }}>
             <Text style={NotificationStyle.buttonText}>Delete</Text>
           </Pressable>
@@ -167,9 +168,9 @@ const ItemView = ({
       onPress={() => onPress(item.id, index)}
       style={[
         NotificationStyle.ViewCont,
-        {backgroundColor: item.read === false ? Colors.red2 : Colors.white},
+        {backgroundColor: Colors.white},
       ]}>
-      <View style={NotificationStyle.circle} />
+      
       <View style={NotificationStyle.reactAngle}>
         <Text style={NotificationStyle.NotiDetail} numberOfLines={2}>
           {item.message}
@@ -178,7 +179,7 @@ const ItemView = ({
           {getFormatedDate(item.created_at)}
         </Text>
       </View>
-      {item.read === false && <View style={NotificationStyle.unRead} />}
+      {/* {item.read === false && <View style={NotificationStyle.unRead} />} */}
     </TouchableOpacity>
   );
 };
@@ -225,9 +226,10 @@ const NotificationStyle = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
   },
   reactAngle: {
-    width: WP(100) - 106,
+    width: WP(100) - 40,
     height: 66,
     justifyContent: 'center',
+    borderBottomWidth:1
   },
   header: {
     height: 56,
