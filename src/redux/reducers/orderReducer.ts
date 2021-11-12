@@ -6,6 +6,7 @@ const InitialOrderState: OrdersStatesInterface = {
   ordersCompleted: [],
   incomingOrder: null,
   orderOrigin: null,
+  status: 0,
 };
 
 export default (
@@ -45,6 +46,9 @@ export default (
     }
     case ActionType.SET_AS_INPROGESS: {
       return {...state, currentOrder: state.incomingOrder, incomingOrder: null};
+    }
+    case ActionType.STATUS_UPDATE: {
+      return {...state, status: payload};
     }
     case ActionType.SET_AS_COMPLETED: {
       return {...state, currentOrder: null};

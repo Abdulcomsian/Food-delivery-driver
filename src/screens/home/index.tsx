@@ -1,12 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  PermissionsAndroid,
-  StyleSheet,
-  Platform,
-  View,
-  Alert,
-} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSelector, useDispatch} from 'react-redux';
@@ -32,10 +26,10 @@ import {getStatus} from '@utils/libs';
 import ACTIONS from '@redux/actions';
 import APIs from '@utils/APIs';
 
-const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
+const HomeScreen = ({navigation}: {navigation: any}) => {
   const {bottom} = useSafeAreaInsets();
   //const locRef = useRef(null);
-  const [status, setStatus] = useState<number>(0);
+  //const [status, setStatus] = useState<number>(0);
   const [distanceData, setDistanceData] = useState(null);
   const [limitReached, setLimitReached] = useState(false);
   const [showQueued, setShowQueued] = useState(false);
@@ -43,13 +37,13 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
   //const [current, setCurrent] = useState({latitude: 0, longitude: 0});
   const dispatch = useDispatch();
   const {
-    detail,
     online,
     ordersPending,
     currentOrder,
     incomingOrder,
     locationEnabled,
     coords,
+    status,
   } = useSelector(
     ({
       USER,
@@ -62,7 +56,9 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
     }) => ({...USER, ...ORDERS, ...APP}),
   );
   useEffect(() => {
-    setStatus(online ? 1 : 0);
+    //ACTIONS.setStatus(online ? 1 : 0)(dispatch);
+    //console.log('STATUS',status)
+    ACTIONS.setStatus(online ? (status ? status : 1) : 0)(dispatch);
     // if (online) {
     //   const requestLocationPermission = async () => {
     //     if (Platform.OS === 'ios') {
@@ -224,7 +220,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
             putitAsCurr={() => {
               ACTIONS.setAsInProgress()(dispatch);
             }}
-            statusSetter={setStatus}
+            statusSetter={(st: number) => ACTIONS.setStatus(st)(dispatch)}
             style={{paddingBottom: bottom ? 5 + bottom : 20}}
           />
         )}
@@ -232,7 +228,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
           <Cards.OrderDeliveredCard
             currentOrder={currentOrder}
             backPress={() => {
-              setStatus(4);
+              ACTIONS.setStatus(4)(dispatch);
             }}
             style={{
               paddingBottom: bottom ? 5 + bottom : 20,
@@ -241,7 +237,8 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
             }}
             statusSetter={() => {
               APIs.orderStatus(currentOrder.id, 7);
-              setStatus(6);
+              //setStatus(6);
+              ACTIONS.setStatus(6)(dispatch);
               ACTIONS.orderCompleted()(dispatch);
             }}
           />
@@ -254,7 +251,8 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
             onPress={() => {
               if (currentOrder === null) {
                 API.orderQuest(incomingOrder.id, true).then(() => {
-                  setStatus(3);
+                  //setStatus(3);
+                  ACTIONS.setStatus(3)(dispatch);
                   ACTIONS.setAsInProgress()(dispatch);
                 });
               } else {
@@ -292,7 +290,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
                     {
                       text: 'Yes',
                       onPress: () => {
-                        setStatus(3);
+                        ACTIONS.setStatus(3)(dispatch);
                         ACTIONS.addPendingToInProgress()(dispatch);
                       },
                     },
@@ -300,7 +298,7 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
                 );
               } else {
                 ACTIONS.addPendingToInProgress()(dispatch);
-                setStatus(3);
+                ACTIONS.setStatus(3)(dispatch);
               }
               setShowQueued(false);
             }}

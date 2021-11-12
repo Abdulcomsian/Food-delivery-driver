@@ -18,6 +18,7 @@ export interface OrdersStatesInterface {
   incomingOrder: object | null;
   ordersPending: Array<object>;
   ordersCompleted: Array<object>;
+  status: number;
 }
 export interface AppStatesInterface {
   authLoading: boolean;

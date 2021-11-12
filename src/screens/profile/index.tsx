@@ -4,10 +4,10 @@ import {View, Text, StyleSheet, Platform, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Colors, Images, TextFamily} from '@constants';
-import {Headers} from '@components';
+import {Headers, Cards, ImageTaker} from '@components';
 import {useSelector} from 'react-redux';
-const ProfileScreen = ({navigation, route}: {navigation: any; route: any}) => {
-  const {top, bottom} = useSafeAreaInsets();
+const ProfileScreen = ({navigation}: {navigation: any}) => {
+  const {bottom} = useSafeAreaInsets();
   const {detail, loggedIn} = useSelector(({USER}) => USER);
   return (
     <View style={[ProfileStyle.container, {paddingBottom: bottom}]}>
@@ -16,13 +16,32 @@ const ProfileScreen = ({navigation, route}: {navigation: any; route: any}) => {
         navigation={navigation}
         renderRight={false}
       />
-      <Image source={Images.avatar} style={ProfileStyle.avatar} />
+      <ImageTaker photoSetter={({mime, path}) => {}}>
+        <Image source={Images.avatar} style={ProfileStyle.avatar} />
+      </ImageTaker>
       <Text style={ProfileStyle.profileName}>
         {loggedIn ? detail.name : ''}
       </Text>
       <View style={[ProfileStyle.rowify, {marginTop: 10}]}>
         <Text style={ProfileStyle.profileRate}>{'4.63'}</Text>
         <Image source={Images.star} style={ProfileStyle.star} />
+      </View>
+      <View
+        style={[
+          ProfileStyle.rowify,
+          {marginTop: 10, justifyContent: 'space-around', width: WP(100) - 40},
+        ]}>
+        <Cards.CounterCard
+          title={`Order\nAccepted`}
+          subTitle="30"
+          color={Colors.indego}
+        />
+        <Cards.CounterCard title={`Order\nRejected`} subTitle="40" />
+        <Cards.CounterCard
+          title={`Total\nEarned`}
+          subTitle="$500"
+          color={Colors.green}
+        />
       </View>
     </View>
   );

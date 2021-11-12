@@ -7,12 +7,14 @@ import {
   ScrollView,
   Platform,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {Table, Row} from 'react-native-table-component';
 import {Colors, TextFamily} from '@constants';
 import {Headers} from '@components';
+import getShadow from '@utils/shadow';
 import APIS from '@utils/APIs';
 const isCloseToBottom = (
   {bottom, top}: {top: number; bottom: number},
@@ -24,13 +26,7 @@ const isCloseToBottom = (
     contentSize.height - paddingToBottom
   );
 };
-const OrderHistoryScreen = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
+const OrderHistoryScreen = ({navigation}: {navigation: any}) => {
   const {top, bottom} = useSafeAreaInsets();
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState<number>(1);
@@ -39,12 +35,13 @@ const OrderHistoryScreen = ({
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const FirstTimeLoad = (refrshing: boolean = false) => {
     refrshing && (setFetching(true), setRefreshing(true));
-    APIS.getOrderList({uid: 1})
+    APIS.getOrders()
       .then(r => {
-        if (Array.isArray(r)) {
-          setOrders(DataToRender(r));
-          setIsMore(r.length === 20);
-          setPage(2);
+        if (Array.isArray(r.data)) {
+          console.log('Res', r.data[0]);
+          setOrders(DataToRender(r.data));
+          //setIsMore(r.length === 20);
+          //setPage(2);
         } else if (refrshing) {
           setIsMore(false);
           setPage(1);
@@ -79,6 +76,7 @@ const OrderHistoryScreen = ({
       arrLoc.push([
         <Text
           numberOfLines={1}
+          onPress={() => {}}
           style={{
             fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
@@ -93,7 +91,7 @@ const OrderHistoryScreen = ({
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
-          {item.name}
+          {item.client.name}
         </Text>,
         <Text
           numberOfLines={1}
@@ -102,7 +100,7 @@ const OrderHistoryScreen = ({
             fontSize: Platform.OS === 'android' ? 15 : 14,
             textAlign: 'center',
           }}>
-          {item.amount}
+          $ {item.order_price}
         </Text>,
         <Text
           numberOfLines={1}
@@ -112,12 +110,26 @@ const OrderHistoryScreen = ({
             fontFamily: TextFamily.ROBOTO_REGULAR,
             fontSize: Platform.OS === 'android' ? 15 : 14,
           }}>
-          {item.pickedFrom}
+          {item.restorant.alias}
         </Text>,
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('orderDetail', {order: item})}
+          style={{
+            height: '90%',
+            width: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 4,
+            ...getShadow(3, Colors.red),
+          }}>
+          <Text style={{color: Colors.white, fontWeight: 'bold'}}>Detail</Text>
+        </TouchableOpacity>,
       ]);
     });
     return arrLoc;
   };
+
   return (
     <View style={OrderHistoryStyle.container}>
       <Headers.HeaderA title="Orders History" navigation={navigation} />
@@ -143,7 +155,7 @@ const OrderHistoryScreen = ({
             onScroll={({nativeEvent}) => {
               if (isCloseToBottom({bottom, top: 0}, nativeEvent)) {
                 //enableSomeButton();
-               // console.log('In The End');
+                // console.log('In The End');
                 appendMore();
               }
             }}
@@ -175,8 +187,8 @@ const OrderHistoryScreen = ({
 };
 
 const tableConstant = {
-  tableHead: ['#', 'Name', 'Amount', 'Picked from'],
-  widthArr: [WP(15) - 30, WP(30), WP(20), WP(50)],
+  tableHead: ['#', 'Name', 'Amount', 'Picked from', ''],
+  widthArr: [WP(15) - 30, WP(30), WP(20), WP(50), 70],
 };
 const OrderHistoryStyle = StyleSheet.create({
   container: {

@@ -1461,6 +1461,22 @@
   resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-7.3.2.tgz#fa4ca52925ac82f8c2520b1524e02310493369c1"
   integrity sha512-iTJJMdC8US/s8Q9VmMyHTsQl9ivAYijH0eHG2XU8LzxYBg0ItJmM7E5xzZcdARiJK8Hui2PDxceEHqS31BETvA==
 
+"@types/react-native-table-component@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-table-component/-/react-native-table-component-1.2.2.tgz#84396dcdd8c6b0067c924a1fc7ef9874d9c3e752"
+  integrity sha512-VJkcxmExTusPMIGie120J4Ambaw1B5vb0O2+O8V9b8Z/5PCfbu0b53s1iJYH2QcCoMoe+jRuVAEcfO76AJqy0g==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+    csstype "^3.0.3"
+
+"@types/react-native@*":
+  version "0.66.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.66.1.tgz#093b4a2a9fce2335548d35be3c8900bf3ebb9373"
+  integrity sha512-CjKGkhXFcMZDYJQ0blz+gxDNH4Jcbbdwoc43onKDVvr9kwg5Nh9liHBixAh2vGYYpO1xLgYm3Y7FIr1CCSmZtg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native@^0.64.5":
   version "0.64.16"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.16.tgz#ab2aa35c7a46b381f5be27b306d537ed3746b68b"
@@ -2502,7 +2518,7 @@ cssstyle@^2.3.0:
   dependencies:
     cssom "~0.3.6"
 
-csstype@^3.0.2:
+csstype@^3.0.2, csstype@^3.0.3:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
   integrity sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==
@@ -5798,6 +5814,11 @@ react-native-gifted-chat@^0.16.3:
     react-native-parsed-text "0.0.22"
     react-native-typing-animation "^0.1.7"
     uuid "3.4.0"
+
+react-native-image-crop-picker@^0.37.1:
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.37.1.tgz#15981a108fedfbacb49ee8401b977b296d00e8d3"
+  integrity sha512-Jk0VTC/c+sU9a1bl0CjAy3SlOXScZ0Pg2STG+qJnYhUQQN1XIbvHYYk30vk0GY/xVQGyslT2ECRzXYIYrQnN3w==
 
 react-native-iphone-x-helper@^1.2.1, react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"

@@ -15,7 +15,9 @@ const ButtonA = ({
   textStyle = {},
   title = '',
   onPress = () => {},
+  disable = false,
 }: {
+  disable?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
   title?: string;
@@ -23,6 +25,7 @@ const ButtonA = ({
 }) => {
   return (
     <TouchableOpacity
+      disabled={disable}
       activeOpacity={0.85}
       onPress={onPress}
       style={{

@@ -10,6 +10,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Drawer from './Drawer';
 import Login from '@screens/login';
 import PhoneVerify from '@screens/phoneVerify';
+import OrderDetail from '@screens/orderDetail';
 //import PasswordReset from '@screens/passwordReset';
 import Geolocation from 'react-native-geolocation-service';
 import Locationswitcher from '@screens/locationSwitcher';
@@ -20,7 +21,8 @@ import {
   updateMyToken,
   putLocationListener,
 } from '@utils/libs';
-import Actions from '../../src/redux/actions';
+import {Store} from '@redux';
+//import Actions from '../../src/redux/actions';
 //===================================================================
 
 const {Navigator, Screen} = createStackNavigator();
@@ -29,9 +31,8 @@ const Stack = () => {
   const {loggedIn, online} = useSelector(
     ({USER}: {USER: InitialUserInterface}) => USER,
   );
-  const dispatch = useDispatch();
   useEffect(() => {
-    updateMyToken('nn', 'nn', token => {
+    updateMyToken('nn', 0, token => {
       console.log('token', token);
     });
     SplashScreen.hide();
@@ -108,15 +109,20 @@ const Stack = () => {
     }
   }, [loggedIn]);
   useEffect(() => {
-    if (loggedIn && online) {
-      putLocationListener(({latitude, longitude}) => {
-        APIs.toggleOff_OnLine(true, latitude, longitude);
-        //Actions.updateLocation({latitude, longitude})(dispatch);
-      });
-    } else {
-      setTimeout(() => {
-        APIs.toggleOff_OnLine(false);
-      }, 1000);
+    if (loggedIn) {
+      online
+        ? putLocationListener(({latitude, longitude}) => {
+            APIs.toggleOff_OnLine(true, latitude, longitude);
+            const {
+              ORDERS: {currentOrder},
+            } = Store.getState();
+            currentOrder !== null &&
+              APIs.orderLocation(currentOrder.id, longitude, latitude);
+            //Actions.updateLocation({latitude, longitude})(dispatch);
+          })
+        : setTimeout(() => {
+            APIs.toggleOff_OnLine(false);
+          }, 1000);
     }
     return Geolocation.stopObserving;
   }, [loggedIn, online]);
@@ -153,6 +159,11 @@ const Stack = () => {
             name={'locationswitcher'}
             component={Locationswitcher}
             options={{headerShown: false}}
+          />
+          <Screen
+            name={'orderDetail'}
+            component={OrderDetail}
+            options={{title: 'Order Detail', headerTitleAlign: 'center'}}
           />
         </Fragment>
       ) : (

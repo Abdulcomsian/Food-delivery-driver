@@ -18,6 +18,7 @@ export default {
   orange: '#F69323',
   transparentOrange: '#F6932336',
   blue: '#0A1F44',
+  indego: '#5D73E4',
   dark: '#2B2B2B',
   GreyTransparent5: '#8E8E931F',
   GreyTransparent4: '#2B2B2BBF',

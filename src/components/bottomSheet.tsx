@@ -18,7 +18,7 @@ const BottomSheetSheetA = ({
   const {detail, loggedIn} = useSelector(({USER}) => USER);
 
   const FilterBottomSheet = useRef<BottomSheet>(null);
-  const snapFilterBottomPoints = useMemo(() => [0, 200 + bottom], []);
+  const snapFilterBottomPoints = useMemo(() => [0, 10 + bottom], []);
   const handleFilterBottomSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
     index === 0 && handleIt(false);
@@ -102,12 +102,13 @@ const BottomSheetSheetA = ({
       snapPoints={snapFilterBottomPoints}
       onChange={handleFilterBottomSheetChanges}>
       <View
-        style={{
-          flex: 1,
-          padding: 30,
-          paddingBottom: 30 + bottom,
-        }}>
-        <View
+      // style={{
+      //   flex: 1,
+      //   padding: 30,
+      //   paddingBottom: 30 + bottom,
+      // }}
+      >
+        {/* <View
           style={{
             flex: 1,
             borderRadius: 8,
@@ -122,7 +123,7 @@ const BottomSheetSheetA = ({
             icon={Images.speedometer}
           />
           <Cards.Item1 title="20" desc={'TOTAL JOBS'} icon={Images.recipt} />
-        </View>
+        </View> */}
       </View>
     </BottomSheet>
   );

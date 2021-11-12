@@ -38,7 +38,9 @@ const userToggleOnlineStatus =
     }
   };
 const userLogout = () => (dispatch: Function) => {
-  dispatch({type: ActionTypes.USER_LOGOUT});
+  APIs.toggleOff_OnLine(false).finally(() => {
+    dispatch({type: ActionTypes.USER_LOGOUT});
+  });
 };
 //=======Orders Actions
 const incomingOrder = (payload: any) => (dispatch: Function) => {
@@ -65,9 +67,13 @@ const setOrderOrigin = (payload: any) => (dispatch: Function) => {
 const updateLocation = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.LOC_UPDATE, payload});
 };
+const setStatus = (payload: any) => (dispatch: Function) => {
+  dispatch({type: ActionTypes.STATUS_UPDATE, payload});
+};
 //=====Exporter
 export default {
   setLoader,
+  setStatus,
   userAuthenticate,
   userToggleOnlineStatus,
   userLogout,

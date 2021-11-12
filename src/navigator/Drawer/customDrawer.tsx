@@ -119,9 +119,10 @@ const CustomDrawerContent = props => {
       <Buttons.ButtonA
         title="Logout"
         onPress={() => {
+          closeIt();
           setTimeout(() => {
             ACTIONS.userLogout()(dispatch);
-          }, 1000);
+          }, 7000);
         }}
         style={{
           width: '80%',

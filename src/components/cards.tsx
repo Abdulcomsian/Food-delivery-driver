@@ -1,18 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useRef} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
   ImageStyle,
   ScrollView,
   ViewStyle,
-  Platform,
   Image,
   View,
   Text,
   Modal,
 } from 'react-native';
-import MapViewDirections from 'react-native-maps-directions';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import getShadow from '@utils/shadow';
 import {Colors, Images, GOOGLE_MAPS_APIKEY, TextFamily} from '@constants';
@@ -598,11 +596,35 @@ const AnOtherOrderRequestCard = ({
   onPress?: Function;
   onPress2?: Function;
 }) => {
+  const [timeWindow, setTimeWindow] = useState<number | string>(60);
+  const timer = useRef<number | string>(60);
+  const interval = useRef<any>(null);
+  useEffect(() => {
+    interval.current = setInterval(() => {
+      if (typeof timer.current === 'number' && timer.current > 0) {
+        timer.current = timer.current - 1;
+        setTimeWindow(t => t - 1);
+      } else if (timer.current === 'timeout') {
+        onPress2();
+      } else {
+        timer.current = 'timeout';
+        setTimeWindow('timeout');
+      }
+    }, 1000);
+    return () => {
+      Boolean(interval.current) && clearInterval(interval.current);
+    };
+  }, []);
   return (
     <View style={orderRequestStyle.AnotherOrderRequestCont}>
       <View style={[orderRequestStyle.orderRequest, {...style}]}>
+        <View style={orderRequestStyle.timer}>
+          <Text style={orderRequestStyle.timerText}>
+            {typeof timeWindow === 'number' ? timeWindow : '0'}
+          </Text>
+        </View>
         <TouchableOpacity
-          onPress={onPress2}
+          onPress={() => onPress2()}
           style={orderRequestStyle.closeBtn}
           activeOpacity={0.85}>
           <Image source={Images.close} style={{width: 16, height: 16}} />
@@ -651,12 +673,20 @@ const AnOtherOrderRequestCard = ({
           />
         </View>
         <Button.ButtonA
-          onPress={onPress}
-          title={'Accept Order'}
-          style={{backgroundColor: Colors.red, marginTop: 20}}
+          onPress={() => {
+            Boolean(interval.current) && clearInterval(interval.current);
+            onPress();
+          }}
+          disable={timeWindow === 'timeout'}
+          title={timeWindow === 'timeout' ? 'Time Out' : 'Accept Order'}
+          style={{
+            backgroundColor:
+              timeWindow === 'timeout' ? Colors.yellow : Colors.red,
+            marginTop: 20,
+          }}
         />
         <Button.ButtonA
-          onPress={onPress2}
+          onPress={() => onPress2()}
           title={'Decline Order'}
           style={{backgroundColor: Colors.red2, marginTop: 9}}
           textStyle={{color: Colors.red}}
@@ -677,7 +707,6 @@ const QueuedOrderRequestCard = ({
   style?: ViewStyle;
   onPress?: Function;
   onPress2?: Function;
-  distanceData: object | null;
 }) => {
   const hCC = {
     destination: {latitude: 37.787, longitude: -122.4324},
@@ -713,7 +742,7 @@ const QueuedOrderRequestCard = ({
       )} */}
       <View style={[orderRequestStyle.orderRequest, {...style}]}>
         <TouchableOpacity
-          onPress={onPress2}
+          onPress={() => onPress2()}
           style={orderRequestStyle.closeBtn}
           activeOpacity={0.85}>
           <Image source={Images.close} style={{width: 16, height: 16}} />
@@ -767,6 +796,46 @@ const QueuedOrderRequestCard = ({
           style={{backgroundColor: Colors.red, marginTop: 20}}
         />
       </View>
+    </View>
+  );
+};
+const CounterCard = ({
+  color = Colors.red,
+  title = '',
+  subTitle = '',
+}: {
+  color?: string;
+  title?: string;
+  subTitle?: string;
+}) => {
+  return (
+    <View
+      style={{
+        backgroundColor: color,
+        width: wp(30) - 15,
+        padding: 5,
+        borderRadius: 4,
+      }}>
+      <Text
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          fontSize: 17,
+          textTransform: 'uppercase',
+          fontFamily: TextFamily.ROBOTO_REGULAR,
+        }}>
+        {title}
+      </Text>
+      <Text
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          fontSize: 20,
+          fontFamily: TextFamily.ROBOTO_BLACK,
+          marginTop: 5,
+        }}>
+        {subTitle}
+      </Text>
     </View>
   );
 };
@@ -900,6 +969,19 @@ const orderRequestStyle = StyleSheet.create({
     right: 0,
     top: 0,
   },
+  timerText: {color: Colors.red, fontWeight: 'bold', fontSize: 17},
+  timer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.red,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 5,
+    top: 5,
+  },
   doneBtn: {
     width: 48,
     height: 48,
@@ -981,4 +1063,5 @@ export default {
   OrderDeliveredCard,
   LimitCardModal,
   QueuedOrderRequestCard,
+  CounterCard,
 };
